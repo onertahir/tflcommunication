@@ -11,44 +11,51 @@
     <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
+        /* Tam Ekran ve Kaydırma Kapatma */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
             font-family: 'Inter', sans-serif;
             background-color: #0b0f19;
             color: #ffffff;
-            overflow-x: hidden;
         }
+        
         /* Özel arka plan parıltıları */
         .glow-orange {
             position: absolute;
-            width: 400px;
-            height: 400px;
+            width: 30vw;
+            height: 30vw;
             background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, rgba(249, 115, 22, 0) 70%);
-            top: 10%;
-            left: -100px;
+            top: 5%;
+            left: -5%;
             z-index: 1;
             pointer-events: none;
         }
         .glow-green {
             position: absolute;
-            width: 500px;
-            height: 500px;
+            width: 40vw;
+            height: 40vw;
             background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0) 70%);
-            top: 40%;
-            right: -100px;
+            top: 30%;
+            right: -10%;
             z-index: 1;
             pointer-events: none;
         }
         .glow-purple {
             position: absolute;
-            width: 600px;
-            height: 600px;
+            width: 50vw;
+            height: 50vw;
             background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, rgba(99, 102, 241, 0) 70%);
-            bottom: -100px;
+            bottom: -20%;
             left: 50%;
             transform: translateX(-50%);
             z-index: 1;
             pointer-events: none;
         }
+        
         /* Görsel 3D Perspektif Efektleri */
         .perspective-container {
             perspective: 1200px;
@@ -67,6 +74,7 @@
             transform: rotateY(-5deg) rotateX(3deg) rotateZ(0deg) scale(1.02) translateZ(80px);
             z-index: 50;
         }
+        
         /* Kartlar için özel Blur ve Kenarlık */
         .glass-card {
             background: rgba(17, 24, 39, 0.4);
@@ -75,12 +83,13 @@
             border: 1px solid rgba(255, 255, 255, 0.03);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
         }
+        
         /* Neon Button Shadow */
         .btn-glow-green {
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
         }
         .btn-glow-green:hover {
-            box-shadow: 0 0 30px rgba(16, 185, 129, 0.6);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.6);
         }
         .btn-glow-orange {
             box-shadow: 0 0 20px rgba(249, 115, 22, 0.2);
@@ -90,15 +99,15 @@
         }
     </style>
 </head>
-<body class="relative min-h-screen">
+<body class="flex flex-col relative">
 
     <!-- Arka Plan Efektleri -->
     <div class="glow-orange"></div>
     <div class="glow-green"></div>
     <div class="glow-purple"></div>
 
-    <!-- HEADER / NAV -->
-    <header class="relative z-50 max-w-7xl mx-auto px-6 py-6 md:py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+    <!-- HEADER / NAV (Yükseklik: ~10%) -->
+    <header class="relative z-50 w-full px-8 py-5 flex items-center justify-between flex-shrink-0">
         <!-- Logo ve Slogan -->
         <div class="flex items-center gap-4">
             <div class="flex items-center gap-2">
@@ -107,118 +116,127 @@
                     TFL <span class="text-xs text-orange-500 ml-1.5 font-bold tracking-widest bg-orange-950/40 px-2 py-0.5 rounded border border-orange-500/20">COMMUNICATION</span>
                 </span>
             </div>
-            <div class="hidden sm:block h-6 w-[1px] bg-gray-800"></div>
-            <span class="text-xs text-gray-500 font-medium hidden sm:inline-block">
+            <div class="h-6 w-[1px] bg-gray-800 hidden md:block"></div>
+            <span class="text-xs text-gray-500 font-medium hidden md:inline-block">
                 Mumble Tabanlı<br>Özgür Sesli İletişim
             </span>
         </div>
 
         <!-- Menü ve Aksiyon -->
-        <nav class="flex flex-col sm:flex-row items-center gap-6 md:gap-8">
-            <ul class="flex items-center gap-6 text-sm text-gray-400 font-medium">
-                <li><a href="#ozellikler" class="hover:text-white transition">Özellikler</a></li>
-                <li><a href="#indir" class="hover:text-white transition">İndir</a></li>
-                <li><a href="https://github.com" target="_blank" class="hover:text-white transition">Dokümantasyon</a></li>
-                <li><a href="https://github.com" target="_blank" class="hover:text-white transition">GitHub</a></li>
+        <nav class="flex items-center gap-6">
+            <ul class="flex items-center gap-6 text-sm text-gray-400 font-medium hidden lg:flex">
+                <li><a href="#" class="hover:text-white transition">Özellikler</a></li>
+                <li><a href="./TFLCommunication-Setup-1.5.0.exe" class="hover:text-white transition">İndir</a></li>
+                <li><a href="https://github.com/onertahir/tflcommunication" target="_blank" class="hover:text-white transition">GitHub</a></li>
             </ul>
-            <a href="https://github.com" target="_blank" class="text-xs font-semibold px-4 py-2.5 rounded-lg bg-[#10B981] hover:bg-[#059669] text-gray-900 flex items-center gap-2 transition btn-glow-green">
+            <a href="https://github.com/onertahir/tflcommunication" target="_blank" class="text-xs font-semibold px-5 py-2.5 rounded-lg bg-[#10B981] hover:bg-[#059669] text-gray-900 flex items-center gap-2 transition btn-glow-green">
                 <i class="fa-brands fa-github text-sm"></i> GitHub'da Görüntüle
             </a>
         </nav>
     </header>
 
-    <!-- HERO SECTION -->
-    <main class="relative z-10 max-w-7xl mx-auto px-6 pt-12 pb-24 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-        <!-- Sol Kolon: Metin ve Butonlar -->
-        <div class="lg:col-span-6 space-y-8 text-center lg:text-left">
-            <h1 class="text-4xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight leading-tight md:leading-[1.1]">
-                Oyuncular ve <br class="hidden lg:inline">
-                Topluluklar için <span class="bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 bg-clip-text text-transparent">Güçlü</span> <br>
-                Sesli İletişim
-            </h1>
+    <!-- HERO SECTION (Yükseklik: ~60%) -->
+    <main class="relative z-10 w-full max-w-[1600px] mx-auto px-8 flex-grow flex items-center justify-center">
+        <div class="grid grid-cols-12 gap-8 items-center w-full">
             
-            <p class="text-gray-400 text-base md:text-lg font-light leading-relaxed max-w-xl mx-auto lg:mx-0">
-                TFL Communication ile ultra düşük gecikmeli, yüksek kaliteli ve tamamen güvenli ses deneyimini keşfedin. Mumble altyapısıyla arkadaşlarınızla kesintisiz bağ kurun.
-            </p>
+            <!-- Sol Kolon: Metin ve Butonlar -->
+            <div class="col-span-12 lg:col-span-5 space-y-6 xl:space-y-8 z-20">
+                <h1 class="text-4xl xl:text-5xl 2xl:text-6xl font-extrabold tracking-tight leading-[1.15]">
+                    Oyuncular ve <br>
+                    Topluluklar için <span class="bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 bg-clip-text text-transparent">Güçlü</span> <br>
+                    Sesli İletişim
+                </h1>
+                
+                <p class="text-gray-400 text-sm xl:text-base font-light leading-relaxed max-w-lg">
+                    TFL Communication ile ultra düşük gecikmeli, yüksek kaliteli ve tamamen güvenli ses deneyimini keşfedin. Mumble altyapısıyla arkadaşlarınızla kesintisiz bağ kurun.
+                </p>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                <!-- İndir Butonu -->
-                <a href="#indir" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-semibold flex items-center justify-center gap-3 transition-all duration-300 transform hover:-translate-y-0.5 btn-glow-orange border border-emerald-400/20 shadow-lg">
-                    <i class="fa-solid fa-circle-down text-lg"></i> Hemen İndir
-                </a>
-                <!-- GitHub Repository -->
-                <a href="https://github.com" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gray-900/60 hover:bg-gray-800/80 text-gray-300 hover:text-white font-semibold flex items-center justify-center gap-3 transition-all duration-300 transform hover:-translate-y-0.5 border border-gray-800 hover:border-gray-700 shadow-md">
-                    <i class="fa-brands fa-github text-lg"></i> GitHub Repository
-                </a>
-            </div>
-        </div>
-
-        <!-- Sağ Kolon: 3D Üst Üste Binen Ekran Görüntüleri -->
-        <div class="lg:col-span-6 perspective-container relative flex justify-center items-center h-[350px] sm:h-[450px] md:h-[500px]">
-            <!-- Arka Plandaki Görsel (image_1.png) -->
-            <div class="absolute w-[80%] sm:w-[70%] lg:w-[85%] max-w-[500px] left-0 top-[15%] z-10 preview-img-2 rounded-xl overflow-hidden border border-gray-800/80">
-                <div class="relative group">
-                    <img src="https://raw.githubusercontent.com/images/image_1.png" alt="TFL Communication Arayüz 2" class="w-full opacity-90 group-hover:opacity-100 transition duration-300" onerror="this.src='https://picsum.photos/id/1062/800/500'">
-                    <!-- Karartma/Derinlik Katmanı -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
+                <div class="flex items-center gap-4 pt-2">
+                    <!-- İndir Butonu (Gerçek Dosya Linki) -->
+                    <a href="./TFLCommunication-Setup-1.5.0.exe" download class="px-6 xl:px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-semibold flex items-center justify-center gap-3 transition-all duration-300 transform hover:-translate-y-0.5 btn-glow-orange border border-emerald-400/20 shadow-lg text-sm xl:text-base">
+                        <i class="fa-solid fa-circle-down text-lg"></i> Hemen İndir
+                    </a>
+                    <!-- GitHub Repository -->
+                    <a href="https://github.com/onertahir/tflcommunication" target="_blank" class="px-6 xl:px-8 py-3.5 rounded-xl bg-gray-900/60 hover:bg-gray-800/80 text-gray-300 hover:text-white font-semibold flex items-center justify-center gap-3 transition-all duration-300 transform hover:-translate-y-0.5 border border-gray-800 hover:border-gray-700 shadow-md text-sm xl:text-base">
+                        <i class="fa-brands fa-github text-lg"></i> GitHub Reposu
+                    </a>
                 </div>
             </div>
 
-            <!-- Ön Plandaki Görsel (image_0.png) -->
-            <div class="absolute w-[85%] sm:w-[75%] lg:w-[90%] max-w-[540px] right-2 sm:right-6 top-6 z-20 preview-img-1 rounded-xl overflow-hidden border border-orange-500/10">
-                <div class="relative group">
-                    <img src="https://raw.githubusercontent.com/images/image_0.png" alt="TFL Communication Arayüz 1" class="w-full transition duration-300" onerror="this.src='https://picsum.photos/id/1069/800/500'">
-                    <!-- Hafif Turuncu Parlama Efekti -->
-                    <div class="absolute inset-0 bg-gradient-to-r from-orange-500/5 via-transparent to-transparent pointer-events-none"></div>
+            <!-- Sağ Kolon: 3D Üst Üste Binen Ekran Görüntüleri -->
+            <div class="col-span-12 lg:col-span-7 perspective-container relative flex justify-center items-center h-full min-h-[40vh]">
+                <!-- Arka Plandaki Görsel (image_1.png.jpg) -->
+                <div class="absolute w-[80%] xl:w-[75%] right-[5%] top-[10%] z-10 preview-img-2 rounded-xl overflow-hidden border border-gray-800/80">
+                    <div class="relative group">
+                        <!-- DEPO'DAKI GERÇEK İSİM KULLANILDI -->
+                        <img src="./image_1.png.jpg" alt="TFL Arayüz 2" class="w-full opacity-90 group-hover:opacity-100 transition duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none"></div>
+                    </div>
+                </div>
+
+                <!-- Ön Plandaki Görsel (image_0.png.jpg) -->
+                <div class="absolute w-[85%] xl:w-[80%] left-[5%] top-[25%] z-20 preview-img-1 rounded-xl overflow-hidden border border-orange-500/20">
+                    <div class="relative group">
+                        <!-- DEPO'DAKI GERÇEK İSİM KULLANILDI -->
+                        <img src="./image_0.png.jpg" alt="TFL Arayüz 1" class="w-full transition duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-r from-orange-500/10 via-transparent to-transparent pointer-events-none"></div>
+                    </div>
                 </div>
             </div>
+            
         </div>
     </main>
 
-    <!-- NEDEN TFL SECTION -->
-    <section id="ozellikler" class="relative z-20 max-w-7xl mx-auto px-6 py-16">
-        <h2 class="text-2xl font-extrabold text-white mb-10 tracking-tight flex items-center gap-3">
+    <!-- NEDEN TFL SECTION (Yükseklik: ~25%) -->
+    <section class="relative z-20 w-full max-w-[1600px] mx-auto px-8 pb-6 flex-shrink-0">
+        <h2 class="text-xl xl:text-2xl font-extrabold text-white mb-4 tracking-tight flex items-center gap-3">
             Neden TFL? <span class="h-1.5 w-1.5 rounded-full bg-orange-500 inline-block animate-pulse"></span>
         </h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Kart 1: Ultra Düşük Gecikme -->
-            <div class="glass-card p-8 rounded-2xl border-l-2 border-l-orange-500/50 hover:border-l-orange-500 transition-all duration-300 transform hover:-translate-y-1">
-                <div class="h-12 w-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-6 text-orange-500">
-                    <i class="fa-solid fa-bolt-lightning text-xl"></i>
+        <div class="grid grid-cols-3 gap-6">
+            <!-- Kart 1 -->
+            <div class="glass-card p-5 xl:p-6 rounded-2xl border-l-2 border-l-orange-500/50 hover:border-l-orange-500 transition-all duration-300">
+                <div class="flex items-center gap-4 mb-3">
+                    <div class="h-10 w-10 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-500 flex-shrink-0">
+                        <i class="fa-solid fa-bolt-lightning text-lg"></i>
+                    </div>
+                    <h3 class="text-base xl:text-lg font-bold text-white">Ultra Düşük Gecikme</h3>
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2">Ultra Düşük Gecikme</h3>
-                <p class="text-gray-400 text-sm font-light leading-relaxed">
+                <p class="text-gray-400 text-xs xl:text-sm font-light leading-relaxed">
                     Mumble tabanlı hızlı altyapı sayesinde gecikmeleri tarihe gömün, anında iletişimin tadını çıkarın.
                 </p>
             </div>
 
-            <!-- Kart 2: Gelişmiş Ses Filtreleri -->
-            <div class="glass-card p-8 rounded-2xl border-l-2 border-l-emerald-500/50 hover:border-l-emerald-500 transition-all duration-300 transform hover:-translate-y-1">
-                <div class="h-12 w-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-6 text-emerald-400">
-                    <i class="fa-solid fa-sliders text-xl"></i>
+            <!-- Kart 2 -->
+            <div class="glass-card p-5 xl:p-6 rounded-2xl border-l-2 border-l-emerald-500/50 hover:border-l-emerald-500 transition-all duration-300">
+                <div class="flex items-center gap-4 mb-3">
+                    <div class="h-10 w-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
+                        <i class="fa-solid fa-sliders text-lg"></i>
+                    </div>
+                    <h3 class="text-base xl:text-lg font-bold text-white">Gelişmiş Ses Filtreleri</h3>
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2">Gelişmiş Ses Filtreleri</h3>
-                <p class="text-gray-400 text-sm font-light leading-relaxed">
+                <p class="text-gray-400 text-xs xl:text-sm font-light leading-relaxed">
                     Gürültü engelleme ve özel geliştirilmiş "Güçlü (TFL)" filtresiyle arka plan seslerinden tamamen kurtulun.
                 </p>
             </div>
 
-            <!-- Kart 3: Müzik ve Eğlence -->
-            <div class="glass-card p-8 rounded-2xl border-l-2 border-l-indigo-500/50 hover:border-l-indigo-500 transition-all duration-300 transform hover:-translate-y-1">
-                <div class="h-12 w-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-6 text-indigo-400">
-                    <i class="fa-solid fa-music text-xl"></i>
+            <!-- Kart 3 -->
+            <div class="glass-card p-5 xl:p-6 rounded-2xl border-l-2 border-l-indigo-500/50 hover:border-l-indigo-500 transition-all duration-300">
+                <div class="flex items-center gap-4 mb-3">
+                    <div class="h-10 w-10 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 flex-shrink-0">
+                        <i class="fa-solid fa-music text-lg"></i>
+                    </div>
+                    <h3 class="text-base xl:text-lg font-bold text-white">Müzik ve Eğlence</h3>
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2">Müzik ve Eğlence</h3>
-                <p class="text-gray-400 text-sm font-light leading-relaxed">
+                <p class="text-gray-400 text-xs xl:text-sm font-light leading-relaxed">
                     Entegre müzik botu ve eğlenceli GIF desteğiyle odadaki enerjiyi her zaman yüksek tutun.
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="relative z-10 max-w-7xl mx-auto px-6 py-12 border-t border-gray-900/50 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+    <!-- FOOTER (Yükseklik: ~5%) -->
+    <footer class="relative z-10 w-full px-8 py-4 border-t border-gray-900/50 flex items-center justify-between text-[11px] xl:text-xs text-gray-500 flex-shrink-0">
         <p>Açık Kaynaklı ve Ücretsiz</p>
         <p>&copy; 2026 TFL Communication. Tüm hakları saklıdır. Mumble altyapısıyla hazırlanmıştır.</p>
     </footer>
