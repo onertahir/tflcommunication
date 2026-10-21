@@ -1,245 +1,289 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TFL Communication - Mumble Tabanlı Özgür Sesli İletişim</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        /* Tam Ekran ve Kaydırma Kapatma */
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            font-family: 'Inter', sans-serif;
-            background-color: #0b0f19;
-            color: #ffffff;
-        }
-        
-        /* Özel arka plan parıltıları */
-        .glow-orange {
-            position: absolute;
-            width: 30vw;
-            height: 30vw;
-            background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, rgba(249, 115, 22, 0) 70%);
-            top: 5%;
-            left: -5%;
-            z-index: 1;
-            pointer-events: none;
-        }
-        .glow-green {
-            position: absolute;
-            width: 40vw;
-            height: 40vw;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0) 70%);
-            top: 30%;
-            right: -10%;
-            z-index: 1;
-            pointer-events: none;
-        }
-        .glow-purple {
-            position: absolute;
-            width: 50vw;
-            height: 50vw;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, rgba(99, 102, 241, 0) 70%);
-            bottom: -20%;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1;
-            pointer-events: none;
-        }
-        
-        /* Görsel 3D Perspektif Efektleri */
-        .perspective-container {
-            perspective: 1200px;
-        }
-        .preview-img-1 {
-            transform: rotateY(-15deg) rotateX(8deg) rotateZ(-2deg) scale(0.95);
-            box-shadow: -20px 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(249, 115, 22, 0.1);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .preview-img-2 {
-            transform: rotateY(-12deg) rotateX(6deg) rotateZ(-1deg) translateZ(50px) scale(0.9);
-            box-shadow: -15px 15px 40px rgba(0, 0, 0, 0.9), 0 0 20px rgba(16, 185, 129, 0.1);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .preview-img-1:hover, .preview-img-2:hover {
-            transform: rotateY(-5deg) rotateX(3deg) rotateZ(0deg) scale(1.02) translateZ(80px);
-            z-index: 50;
-        }
-        
-        /* Kartlar için özel Blur ve Kenarlık */
-        .glass-card {
-            background: rgba(17, 24, 39, 0.4);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
-        }
-        
-        /* Neon Button Shadow */
-        .btn-glow-green {
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
-        }
-        .btn-glow-green:hover {
-            box-shadow: 0 0 25px rgba(16, 185, 129, 0.6);
-        }
-        .btn-glow-orange {
-            box-shadow: 0 0 20px rgba(249, 115, 22, 0.2);
-        }
-        .btn-glow-orange:hover {
-            box-shadow: 0 0 30px rgba(249, 115, 22, 0.4);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TFL Communication · Takımın için düşük gecikmeli ses</title>
+<meta name="description" content="CS takımları için sesli iletişim: düşük gecikme, yapay zekâ gürültü filtresi, müzik botu, taktik tahtası, maç istatistikleri ve FACEIT entegrasyonu. Windows için ücretsiz.">
+<meta property="og:title" content="TFL Communication">
+<meta property="og:description" content="Takımın için düşük gecikmeli sesli iletişim. Klavye sesi yok, FPS kaybı yok.">
+<meta property="og:image" content="img/ses.webp">
+<meta name="theme-color" content="#07090d">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink-0:#07090d;--ink-1:#0b0f14;--ink-2:#10151c;--ink-3:#161d27;--line:#1f2835;--line-2:#2c384a;
+  --text:#e8eef6;--muted:#8d9aad;--faint:#5b687c;
+  --accent:#ff6a3d;--accent-2:#ffb547;--live:#2ee6a6;
+  --grad:linear-gradient(135deg,#ff6a3d 0%,#ff8a3d 45%,#ffb547 100%);
+  --display:"Chakra Petch","Bahnschrift","Segoe UI",sans-serif;
+  --body:"Manrope","Segoe UI",system-ui,sans-serif;
+  --r:14px;--max:1160px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink-0);color:var(--text);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+@media (max-width:600px){.wrap{padding:0 16px}}
+
+/* background: soft orange glow + fine grid */
+.bg{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(900px 520px at 78% -8%,rgba(255,106,61,.20),transparent 60%),
+    radial-gradient(700px 480px at -10% 30%,rgba(255,181,71,.07),transparent 60%),
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px) 0 0/48px 48px,
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px) 0 0/48px 48px,
+    var(--ink-0)}
+.bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 0,var(--ink-0) 85%)}
+
+/* nav */
+header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(7,9,13,.72);border-bottom:1px solid rgba(255,255,255,.05)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--display);font-weight:700;letter-spacing:.06em;font-size:15px}
+.brand img{width:32px;height:32px;border-radius:9px}
+.brand b{color:var(--text)}.brand span{color:var(--muted);font-weight:500}
+.nav nav{display:flex;align-items:center;gap:28px;font-size:14px;color:var(--muted);font-weight:500}
+.nav nav a:hover{color:var(--text)}
+.nav .btn-sm{padding:9px 16px;border-radius:10px;background:var(--grad);color:#170a04;font-weight:700}
+@media (max-width:760px){.nav nav a:not(.btn-sm){display:none}}
+
+/* hero */
+.hero{padding-top:84px;padding-bottom:40px;text-align:center}
+@media (max-width:600px){.hero{padding-top:52px}.btn{width:100%;justify-content:center}.meta span:nth-child(even){display:none}}
+.pill{display:inline-flex;align-items:center;gap:9px;padding:6px 14px 6px 10px;border-radius:999px;border:1px solid var(--line-2);background:rgba(16,21,28,.7);font-size:13px;color:var(--muted);font-weight:600}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--live);box-shadow:0 0 0 4px rgba(46,230,166,.15);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(46,230,166,0)}}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(40px,7vw,78px);line-height:1.02;letter-spacing:-.01em;margin:26px auto 22px;max-width:900px;text-transform:uppercase}
+h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(16px,2vw,19px);color:var(--muted);max-width:640px;margin:0 auto}
+.cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:38px}
+.btn{display:inline-flex;align-items:center;gap:12px;padding:16px 26px;border-radius:14px;font-weight:700;font-size:16px;transition:transform .15s ease,box-shadow .2s ease,background .2s;cursor:pointer;border:0;font-family:inherit}
+.btn svg{width:20px;height:20px;flex:none}
+.btn-main{background:var(--grad);color:#170a04;box-shadow:0 10px 40px -8px rgba(255,106,61,.55),inset 0 1px 0 rgba(255,255,255,.35)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 16px 50px -8px rgba(255,106,61,.7),inset 0 1px 0 rgba(255,255,255,.35)}
+.btn-main small{display:block;font-size:12px;font-weight:600;opacity:.72;line-height:1.2}
+.btn-main .t{display:flex;flex-direction:column;align-items:flex-start;line-height:1.25}
+.btn-ghost{background:rgba(22,29,39,.7);color:var(--text);border:1px solid var(--line-2)}
+.btn-ghost:hover{background:var(--ink-3);transform:translateY(-2px)}
+.meta{margin-top:18px;font-size:13px;color:var(--faint);display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.meta span{display:inline-flex;align-items:center;gap:6px}
+
+/* app window */
+.shot{margin:64px auto 0;max-width:1080px;position:relative}
+.shot::before{content:"";position:absolute;inset:8% 6% -4%;background:radial-gradient(closest-side,rgba(255,106,61,.35),transparent);filter:blur(40px);z-index:-1}
+.win{border-radius:16px;overflow:hidden;border:1px solid var(--line-2);background:var(--ink-1);box-shadow:0 40px 90px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.02)}
+.win img{width:100%;height:auto}
+
+/* sections */
+section{padding:96px 0}
+.eyebrow{font-family:var(--display);color:var(--accent);font-weight:600;letter-spacing:.18em;font-size:13px;text-transform:uppercase}
+h2{font-family:var(--display);font-size:clamp(30px,4.4vw,46px);line-height:1.08;margin:12px 0 16px;text-transform:uppercase;letter-spacing:-.005em}
+.sub{color:var(--muted);max-width:620px;font-size:17px}
+.head{margin-bottom:48px}
+
+/* strip */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r);background:rgba(11,15,20,.7);overflow:hidden}
+.strip div{padding:26px 24px;border-right:1px solid var(--line)}
+.strip div:last-child{border-right:0}
+.strip b{display:block;font-family:var(--display);font-size:28px;font-weight:700;line-height:1.1}
+.strip b span{color:var(--accent)}
+.strip p{color:var(--muted);font-size:14px;margin-top:6px}
+@media (max-width:820px){.strip{grid-template-columns:1fr 1fr}.strip div:nth-child(2){border-right:0}.strip div:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+@media (max-width:440px){.strip{grid-template-columns:1fr}.strip div{border-right:0;border-bottom:1px solid var(--line)}.strip div:last-child{border-bottom:0}}
+
+/* features */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:900px){.grid{grid-template-columns:1fr 1fr}}
+@media (max-width:600px){.grid{grid-template-columns:1fr}}
+.card{position:relative;padding:28px 26px;border-radius:var(--r);background:linear-gradient(180deg,rgba(22,29,39,.75),rgba(13,17,23,.75));border:1px solid var(--line);transition:border-color .2s,transform .2s}
+.card:hover{border-color:rgba(255,106,61,.45);transform:translateY(-3px)}
+.ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:rgba(255,106,61,.12);border:1px solid rgba(255,106,61,.25);color:var(--accent);margin-bottom:20px}
+.ico svg{width:22px;height:22px}
+.card h3{font-family:var(--display);font-size:20px;font-weight:600;margin-bottom:8px;letter-spacing:.01em}
+.card p{color:var(--muted);font-size:15px}
+
+/* split */
+.split{display:grid;grid-template-columns:1fr 1.25fr;gap:56px;align-items:center}
+@media (max-width:900px){.split{grid-template-columns:1fr;gap:36px}}
+.ticks{list-style:none;margin-top:26px;display:grid;gap:14px}
+.ticks li{display:flex;gap:12px;color:var(--text);font-size:16px}
+.ticks li::before{content:"";flex:none;width:20px;height:20px;margin-top:3px;border-radius:6px;background:rgba(46,230,166,.14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232ee6a6' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/13px no-repeat}
+.ticks li span{color:var(--muted)}
+
+/* install steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;counter-reset:s}
+@media (max-width:860px){.steps{grid-template-columns:1fr}}
+.step{padding:28px 26px;border-radius:var(--r);border:1px solid var(--line);background:rgba(11,15,20,.7);counter-increment:s}
+.step::before{content:"0" counter(s);font-family:var(--display);font-weight:700;font-size:36px;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;display:block;margin-bottom:14px}
+.step h3{font-family:var(--display);font-size:19px;margin-bottom:6px}
+.step p{color:var(--muted);font-size:15px}
+.step kbd{font-family:var(--body);font-size:13px;font-weight:700;padding:2px 7px;border-radius:6px;background:var(--ink-3);border:1px solid var(--line-2);color:var(--text)}
+.note{margin-top:18px;padding:18px 20px;border-radius:12px;border:1px solid rgba(255,181,71,.25);background:rgba(255,181,71,.06);color:var(--muted);font-size:14.5px;display:flex;gap:12px}
+.note svg{flex:none;width:20px;height:20px;color:var(--accent-2);margin-top:2px}
+.note b{color:var(--text)}
+
+/* final cta */
+.final{text-align:center;padding:72px 28px;border-radius:24px;border:1px solid var(--line-2);background:radial-gradient(600px 260px at 50% 0,rgba(255,106,61,.22),transparent 70%),var(--ink-1);position:relative;overflow:hidden}
+.final img{width:76px;height:76px;border-radius:20px;margin:0 auto 22px;box-shadow:0 14px 40px -10px rgba(255,106,61,.6)}
+.final h2{margin-top:0}
+.final .sub{margin:0 auto}
+
+footer{padding:40px 0 48px;color:var(--faint);font-size:14px}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:28px}
+.foot a:hover{color:var(--text)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.pill i{animation:none}html{scroll-behavior:auto}}
+</style>
 </head>
-<body class="flex flex-col relative">
+<body>
+<div class="bg"></div>
 
-    <!-- Arka Plan Efektleri -->
-    <div class="glow-orange"></div>
-    <div class="glow-green"></div>
-    <div class="glow-purple"></div>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#"><img src="img/logo.png" alt="TFL logosu"><b>TFL</b><span>COMMUNICATION</span></a>
+    <nav>
+      <a href="#ozellikler">Özellikler</a>
+      <a href="#istatistik">İstatistik</a>
+      <a href="#kurulum">Kurulum</a>
+      <a class="btn-sm" href="TFLcommunication-Setup.exe" download="TFLcommunication-Setup.exe" data-dl>İndir</a>
+    </nav>
+  </div>
+</header>
 
-    <!-- HEADER / NAV (Yükseklik: ~10%) -->
-    <header class="relative z-50 w-full px-8 py-5 flex items-center justify-between flex-shrink-0">
-        <!-- Logo ve Slogan -->
-        <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-microphone-lines text-orange-500 text-2xl"></i>
-                <span class="font-extrabold text-xl tracking-wider uppercase text-white flex items-center">
-                    TFL <span class="text-xs text-orange-500 ml-1.5 font-bold tracking-widest bg-orange-950/40 px-2 py-0.5 rounded border border-orange-500/20">COMMUNICATION</span>
-                </span>
-            </div>
-            <div class="h-6 w-[1px] bg-gray-800 hidden md:block"></div>
-            <span class="text-xs text-gray-500 font-medium hidden md:inline-block">
-                Mumble Tabanlı<br>Özgür Sesli İletişim
-            </span>
+<main>
+  <div class="wrap hero">
+    <span class="pill"><i></i>Sürüm <span data-ver>1.7.1</span> yayında · Windows</span>
+    <h1>Takımın sesi.<br><em>Gecikme yok.</em></h1>
+    <p class="lead">CS takımları için yapılmış sesli iletişim. Yapay zekâ klavye ve fare sesini temizler, müzik botu sohbeti kapatmaz, taktik tahtası ve maç istatistikleri tek pencerede.</p>
+    <div class="cta">
+      <a class="btn btn-main" href="TFLcommunication-Setup.exe" download="TFLcommunication-Setup.exe" data-dl>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16"/></svg>
+        <span class="t">Windows için indir<small>Ücretsiz · yaklaşık 2 MB</small></span>
+      </a>
+      <a class="btn btn-ghost" href="https://github.com/onertahir/tflcommunication" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.62 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.38-5.26 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+        GitHub
+      </a>
+    </div>
+    <div class="meta"><span>Windows 10 / 11</span><span>·</span><span>Yönetici izni gerekmez</span><span>·</span><span>Güncellemeler uygulama içinden tek tıkla</span></div>
+
+    <div class="shot rv">
+      <div class="win"><img src="img/ses.webp" width="1320" height="800" alt="TFL Communication ses kanalı ekranı: kanaldaki oyuncular, sohbet ve kontroller"></div>
+    </div>
+  </div>
+
+  <section style="padding-top:72px">
+    <div class="wrap">
+      <div class="strip rv">
+        <div><b>10<span> ms</span></b><p>ses paketleri, oyun içi konuşma kadar hızlı</p></div>
+        <div><b>Opus<span> 72k</span></b><p>net ve doğal ses kalitesi</p></div>
+        <div><b>Yapay<span> zekâ</span></b><p>klavye, fare ve oda sesi filtresi</p></div>
+        <div><b>%0<span> reklam</span></b><p>kendi sunucunuz, sizin kurallarınız</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ozellikler">
+    <div class="wrap">
+      <div class="head rv">
+        <div class="eyebrow">Özellikler</div>
+        <h2>Maç için gereken her şey</h2>
+        <p class="sub">Discord'un rahatlığı, Mumble'ın hızı. Takım olarak oynayanlar için ayarlandı.</p>
+      </div>
+      <div class="grid">
+        <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h2m3-5v10m4-13v16m4-12v8m4-5v2m3-1h-1"/></svg></div><h3>Yapay zekâ filtresi</h3><p>RNNoise sinir ağı konuşmanı ayırır; konuşmadığında mikrofon tamamen susar. Takım arkadaşın klavyeni duymaz.</p></div>
+        <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></svg></div><h3>Bas-konuş, her tuş</h3><p>Klavye, kombinasyon ya da farenin yan tuşları. Clutch tuşu ile bir anda herkesi kıs, sadece maça odaklan.</p></div>
+        <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><h3>TaKo0boT müzik</h3><p>YouTube ve Spotify'dan şarkı çal. Müzik sohbetin yanında küçük bir sekmede durur, ekranı kaplamaz.</p></div>
+        <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l3.5-1 11-11-2.5-2.5-11 11L3 21zM14 5.5L16.5 3 21 7.5 18.5 10"/></svg></div><h3>Taktik tahtası</h3><p>Aktif tüm CS2 haritalarında canlı çizim; herkes aynı anda görür. Stratları kütüphaneye kaydet.</p></div>
+        <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10m6 10V4m6 16v-7m4 7H2"/></svg></div><h3>Maç istatistikleri</h3><p>Skor, harita, haftalık galibiyet/mağlubiyet ve oyuncu analizleri. Veriler sunucuda, herkes aynı tabloyu görür.</p></div>
+        <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.4 7L12 17.6 5.8 21l1.4-7L2 9.3l7-.8z"/></svg></div><h3>FACEIT entegrasyonu</h3><p>Profil linkini yapıştır: ELO, K/D, kazanma oranı ve aranızdaki sıralama. Ortak maçlar otomatik eklenir.</p></div>
+        <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div><h3>Hazır mısın?</h3><p>Tek tıkla herkese hazır kontrolü, maç sonunda skor ve oyuncu özeti.</p></div>
+        <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h3>Şifreli odalar</h3><p>Maç odalarına şifre ve kişi sınırı koy. Yönetici dahil herkese şifre sorulur.</p></div>
+        <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M10 9l5 3-5 3z"/></svg></div><h3>Birlikte izle</h3><p>YouTube'dan dizi, film, maç tekrarı; herkes aynı saniyede izler. Sohbet, GIF ve tepkiler de cabası.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="istatistik">
+    <div class="wrap split">
+      <div class="rv">
+        <div class="eyebrow">Analiz</div>
+        <h2>Kaç maç, kaç galibiyet, hangi harita?</h2>
+        <p class="sub">Maçlarınız tarihleriyle birlikte saklanır. Haftalık tabloyla nerede iyi, nerede kötü olduğunuzu görürsünüz.</p>
+        <ul class="ticks">
+          <li><div>Haftalık galibiyet / mağlubiyet <span>ve seri takibi</span></div></li>
+          <li><div>Harita bazında başarı <span>oranları</span></div></li>
+          <li><div>Oyuncu başına K/D, ADR, HS% <span>ve MVP</span></div></li>
+          <li><div>FACEIT'ten otomatik <span>maç ve istatistik çekme</span></div></li>
+        </ul>
+      </div>
+      <div class="win rv"><img src="img/istatistik.webp" width="1320" height="800" alt="Maç istatistikleri ekranı: galibiyet, mağlubiyet, FACEIT sıralaması ve haftalık grafik"></div>
+    </div>
+  </section>
+
+  <section id="kurulum">
+    <div class="wrap">
+      <div class="head rv">
+        <div class="eyebrow">Kurulum</div>
+        <h2>Bir dakikada hazır</h2>
+      </div>
+      <div class="steps">
+        <div class="step rv"><h3>İndir</h3><p>Yukarıdaki <b>Windows için indir</b> düğmesine bas. Tarayıcı “yaygın olarak indirilmiyor” derse <kbd>Sakla</kbd> seç.</p></div>
+        <div class="step rv"><h3>Kur</h3><p>Dosyayı aç. Windows mavi bir uyarı gösterirse <kbd>Ek bilgi</kbd> → <kbd>Yine de çalıştır</kbd>. İlk kurulum uygulama motorunu indirir (~110 MB).</p></div>
+        <div class="step rv"><h3>Bağlan</h3><p>Adını ve sunucu şifresini yaz, <kbd>Bağlan</kbd>. Sonraki güncellemeler soldaki menüde tek tıkla gelir.</p></div>
+      </div>
+      <div class="note rv">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v5m0 3h.01"/></svg>
+        <div><b>Neden uyarı çıkıyor?</b> Kurulum dosyası ücretli bir kod imzalama sertifikasıyla imzalanmadığı için Windows ve tarayıcılar yeni dosyalara temkinli davranır. Uygulama içi güncellemeler ise kendi dijital imzamızla doğrulanır.</div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:24px">
+    <div class="wrap">
+      <div class="final rv">
+        <img src="img/logo.png" alt="">
+        <h2>Takımını topla</h2>
+        <p class="sub">Ücretsiz, reklamsız, sizin sunucunuzda.</p>
+        <div class="cta">
+          <a class="btn btn-main" href="TFLcommunication-Setup.exe" download="TFLcommunication-Setup.exe" data-dl>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16"/></svg>
+            <span class="t">Windows için indir<small>Sürüm <span data-ver>1.7.1</span></small></span>
+          </a>
         </div>
+      </div>
+    </div>
+  </section>
+</main>
 
-        <!-- Menü ve Aksiyon -->
-        <nav class="flex items-center gap-6">
-            <ul class="flex items-center gap-6 text-sm text-gray-400 font-medium hidden lg:flex">
-                <li><a href="#" class="hover:text-white transition">Özellikler</a></li>
-                <li><a href="./TFLCommunication-Setup-1.5.0.exe" class="hover:text-white transition">İndir</a></li>
-                <li><a href="https://github.com/onertahir/tflcommunication" target="_blank" class="hover:text-white transition">GitHub</a></li>
-            </ul>
-            <a href="https://github.com/onertahir/tflcommunication" target="_blank" class="text-xs font-semibold px-5 py-2.5 rounded-lg bg-[#10B981] hover:bg-[#059669] text-gray-900 flex items-center gap-2 transition btn-glow-green">
-                <i class="fa-brands fa-github text-sm"></i> GitHub'da Görüntüle
-            </a>
-        </nav>
-    </header>
+<footer>
+  <div class="wrap foot">
+    <span>© 2026 TFL Communication · Mumble tabanlı, açık kaynak bileşenlerle</span>
+    <a href="https://github.com/onertahir/tflcommunication" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
 
-    <!-- HERO SECTION (Yükseklik: ~60%) -->
-    <main class="relative z-10 w-full max-w-[1600px] mx-auto px-8 flex-grow flex items-center justify-center">
-        <div class="grid grid-cols-12 gap-8 items-center w-full">
-            
-            <!-- Sol Kolon: Metin ve Butonlar -->
-            <div class="col-span-12 lg:col-span-5 space-y-6 xl:space-y-8 z-20">
-                <h1 class="text-4xl xl:text-5xl 2xl:text-6xl font-extrabold tracking-tight leading-[1.15]">
-                    Oyuncular ve <br>
-                    Topluluklar için <span class="bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 bg-clip-text text-transparent">Güçlü</span> <br>
-                    Sesli İletişim
-                </h1>
-                
-                <p class="text-gray-400 text-sm xl:text-base font-light leading-relaxed max-w-lg">
-                    TFL Communication ile ultra düşük gecikmeli, yüksek kaliteli ve tamamen güvenli ses deneyimini keşfedin. Mumble altyapısıyla arkadaşlarınızla kesintisiz bağ kurun.
-                </p>
-
-                <div class="flex items-center gap-4 pt-2">
-                    <!-- İndir Butonu (Gerçek Dosya Linki) -->
-                    <a href="./TFLCommunication-Setup-1.5.0.exe" download class="px-6 xl:px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-semibold flex items-center justify-center gap-3 transition-all duration-300 transform hover:-translate-y-0.5 btn-glow-orange border border-emerald-400/20 shadow-lg text-sm xl:text-base">
-                        <i class="fa-solid fa-circle-down text-lg"></i> Hemen İndir
-                    </a>
-                    <!-- GitHub Repository -->
-                    <a href="https://github.com/onertahir/tflcommunication" target="_blank" class="px-6 xl:px-8 py-3.5 rounded-xl bg-gray-900/60 hover:bg-gray-800/80 text-gray-300 hover:text-white font-semibold flex items-center justify-center gap-3 transition-all duration-300 transform hover:-translate-y-0.5 border border-gray-800 hover:border-gray-700 shadow-md text-sm xl:text-base">
-                        <i class="fa-brands fa-github text-lg"></i> GitHub Reposu
-                    </a>
-                </div>
-            </div>
-
-            <!-- Sağ Kolon: 3D Üst Üste Binen Ekran Görüntüleri -->
-            <div class="col-span-12 lg:col-span-7 perspective-container relative flex justify-center items-center h-full min-h-[40vh]">
-                <!-- Arka Plandaki Görsel (image_1.png.jpg) -->
-                <div class="absolute w-[80%] xl:w-[75%] right-[5%] top-[10%] z-10 preview-img-2 rounded-xl overflow-hidden border border-gray-800/80">
-                    <div class="relative group">
-                        <!-- DEPO'DAKI GERÇEK İSİM KULLANILDI -->
-                        <img src="./image_1.png.jpg" alt="TFL Arayüz 2" class="w-full opacity-90 group-hover:opacity-100 transition duration-300">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none"></div>
-                    </div>
-                </div>
-
-                <!-- Ön Plandaki Görsel (image_0.png.jpg) -->
-                <div class="absolute w-[85%] xl:w-[80%] left-[5%] top-[25%] z-20 preview-img-1 rounded-xl overflow-hidden border border-orange-500/20">
-                    <div class="relative group">
-                        <!-- DEPO'DAKI GERÇEK İSİM KULLANILDI -->
-                        <img src="./image_0.png.jpg" alt="TFL Arayüz 1" class="w-full transition duration-300">
-                        <div class="absolute inset-0 bg-gradient-to-r from-orange-500/10 via-transparent to-transparent pointer-events-none"></div>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-    </main>
-
-    <!-- NEDEN TFL SECTION (Yükseklik: ~25%) -->
-    <section class="relative z-20 w-full max-w-[1600px] mx-auto px-8 pb-6 flex-shrink-0">
-        <h2 class="text-xl xl:text-2xl font-extrabold text-white mb-4 tracking-tight flex items-center gap-3">
-            Neden TFL? <span class="h-1.5 w-1.5 rounded-full bg-orange-500 inline-block animate-pulse"></span>
-        </h2>
-
-        <div class="grid grid-cols-3 gap-6">
-            <!-- Kart 1 -->
-            <div class="glass-card p-5 xl:p-6 rounded-2xl border-l-2 border-l-orange-500/50 hover:border-l-orange-500 transition-all duration-300">
-                <div class="flex items-center gap-4 mb-3">
-                    <div class="h-10 w-10 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-500 flex-shrink-0">
-                        <i class="fa-solid fa-bolt-lightning text-lg"></i>
-                    </div>
-                    <h3 class="text-base xl:text-lg font-bold text-white">Ultra Düşük Gecikme</h3>
-                </div>
-                <p class="text-gray-400 text-xs xl:text-sm font-light leading-relaxed">
-                    Mumble tabanlı hızlı altyapı sayesinde gecikmeleri tarihe gömün, anında iletişimin tadını çıkarın.
-                </p>
-            </div>
-
-            <!-- Kart 2 -->
-            <div class="glass-card p-5 xl:p-6 rounded-2xl border-l-2 border-l-emerald-500/50 hover:border-l-emerald-500 transition-all duration-300">
-                <div class="flex items-center gap-4 mb-3">
-                    <div class="h-10 w-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
-                        <i class="fa-solid fa-sliders text-lg"></i>
-                    </div>
-                    <h3 class="text-base xl:text-lg font-bold text-white">Gelişmiş Ses Filtreleri</h3>
-                </div>
-                <p class="text-gray-400 text-xs xl:text-sm font-light leading-relaxed">
-                    Gürültü engelleme ve özel geliştirilmiş "Güçlü (TFL)" filtresiyle arka plan seslerinden tamamen kurtulun.
-                </p>
-            </div>
-
-            <!-- Kart 3 -->
-            <div class="glass-card p-5 xl:p-6 rounded-2xl border-l-2 border-l-indigo-500/50 hover:border-l-indigo-500 transition-all duration-300">
-                <div class="flex items-center gap-4 mb-3">
-                    <div class="h-10 w-10 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 flex-shrink-0">
-                        <i class="fa-solid fa-music text-lg"></i>
-                    </div>
-                    <h3 class="text-base xl:text-lg font-bold text-white">Müzik ve Eğlence</h3>
-                </div>
-                <p class="text-gray-400 text-xs xl:text-sm font-light leading-relaxed">
-                    Entegre müzik botu ve eğlenceli GIF desteğiyle odadaki enerjiyi her zaman yüksek tutun.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER (Yükseklik: ~5%) -->
-    <footer class="relative z-10 w-full px-8 py-4 border-t border-gray-900/50 flex items-center justify-between text-[11px] xl:text-xs text-gray-500 flex-shrink-0">
-        <p>Açık Kaynaklı ve Ücretsiz</p>
-        <p>&copy; 2026 TFL Communication. Tüm hakları saklıdır. Mumble altyapısıyla hazırlanmıştır.</p>
-    </footer>
-
+<script>
+// scroll reveal
+(function () {
+  var els = document.querySelectorAll('.rv');
+  if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
+  els.forEach(function (e) { io.observe(e); });
+})();
+// version shown on the page comes from version.txt (update it together with the exe)
+fetch('version.txt', { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : null; }).then(function (v) {
+  v = (v || '').trim();
+  if (/^\d+\.\d+\.\d+$/.test(v)) document.querySelectorAll('[data-ver]').forEach(function (e) { e.textContent = v; });
+}).catch(function () {});
+</script>
 </body>
 </html>
